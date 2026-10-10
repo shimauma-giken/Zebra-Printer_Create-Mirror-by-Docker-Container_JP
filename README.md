@@ -126,7 +126,7 @@ MirrorサーバであるSFTP環境構築にはサーバの手配であったり�
    ```
     <br/>
 
-1. 利用のネットワーク環境に応じて、ネットワーク設定を変更します。
+3. 利用のネットワーク環境に応じて、docker-compose.ymlを変更します。
    ```
    services:
     zebra-sftp:
@@ -151,7 +151,7 @@ MirrorサーバであるSFTP環境構築にはサーバの手配であったり�
             gateway: 192.168.4.254 # <-- Gateway設定
    ```
    
-2. dockerサービスを開始します。
+4. dockerサービスを開始します。
    
    ```
     docker@nuc01:~/workspace/sftp-server-01$ docker compose up -d 
@@ -160,7 +160,7 @@ MirrorサーバであるSFTP環境構築にはサーバの手配であったり�
     ```
     <br/>
 
-3. sftpでログイン確認します。
+5. sftpでログイン確認します。
    - login zebra
    - pass: zebra
 
@@ -178,7 +178,7 @@ MirrorサーバであるSFTP環境構築にはサーバの手配であったり�
     ```
     <br/>
 
-4. プリンタのMirror/Sftp設定をし、自動更新を確認する。
+6. プリンタのMirror/Sftp設定をし、自動更新を確認する。
    
    [Programinng Guide：Mirror 1699ページ参照](https://docs.zebra.com/us/en/printers/software/zpl-pg/c-zpl-mirror-mirror/c-zpl-mirror-configuration/r-zpl-mirror-mirror-printer-configuration.html)
 
