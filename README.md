@@ -66,7 +66,7 @@ MirrorサーバであるSFTP環境構築にはサーバの手配であったり�
    ```
     <br/>
 
-1. dockerサービスを開始します。
+3. dockerサービスを開始します。
    
    ```
    sftp_mirror_01> docker compose up -d
@@ -76,7 +76,7 @@ MirrorサーバであるSFTP環境構築にはサーバの手配であったり�
    ```
     <br/>
 
-1. sftpでログイン確認します。
+4. sftpでログイン確認します。
    - login zebra
    - pass: zebra
 
@@ -93,7 +93,7 @@ MirrorサーバであるSFTP環境構築にはサーバの手配であったり�
     ```
     <br/>
 
-1. プリンタのMirror/Sftp設定をし、自動更新を確認する。
+5. プリンタのMirror/Sftp設定をし、自動更新を確認する。
    
    [Programinng Guide：Mirror 1699ページ参照](https://docs.zebra.com/us/en/printers/software/zpl-pg/c-zpl-mirror-mirror/c-zpl-mirror-configuration/r-zpl-mirror-mirror-printer-configuration.html)
 
@@ -124,7 +124,34 @@ MirrorサーバであるSFTP環境構築にはサーバの手配であったり�
    ```
    cd sftp_mirror_01
    ```
-1. dockerサービスを開始します。
+    <br/>
+
+1. 利用のネットワーク環境に応じて、ネットワーク設定を変更します。
+   ```
+   services:
+    zebra-sftp:
+        image: atmoz/sftp:latest
+        container_name: sftp_mirror_01
+        volumes:
+        - ./zebra_mirror:/home/zebra/mirror
+        command: zebra:zebra:1002:1002:mirror
+        restart: unless-stopped
+        networks:
+        zebra_net:
+            ipv4_address: 192.168.4.225 # <-- Mirror用の公開IP（ホストのIPとは別）
+
+    networks:
+    zebra_net:
+        driver: ipvlan # <-- ipvlanを使用（macvlanは無線に非対応）
+        driver_opts:
+        parent: wlp2s0 # <-- お使いの物理インターフェース名（eno1, wlan0 等、ip route get 8.8.8.8で確認）
+        ipam:
+        config:
+            - subnet: 192.168.4.0/24 # <-- subnet設定
+            gateway: 192.168.4.254 # <-- Gateway設定
+   ```
+   
+2. dockerサービスを開始します。
    
    ```
     docker@nuc01:~/workspace/sftp-server-01$ docker compose up -d 
@@ -133,7 +160,7 @@ MirrorサーバであるSFTP環境構築にはサーバの手配であったり�
     ```
     <br/>
 
-1. sftpでログイン確認します。
+3. sftpでログイン確認します。
    - login zebra
    - pass: zebra
 
@@ -151,7 +178,7 @@ MirrorサーバであるSFTP環境構築にはサーバの手配であったり�
     ```
     <br/>
 
-1. プリンタのMirror/Sftp設定をし、自動更新を確認する。
+4. プリンタのMirror/Sftp設定をし、自動更新を確認する。
    
    [Programinng Guide：Mirror 1699ページ参照](https://docs.zebra.com/us/en/printers/software/zpl-pg/c-zpl-mirror-mirror/c-zpl-mirror-configuration/r-zpl-mirror-mirror-printer-configuration.html)
 
